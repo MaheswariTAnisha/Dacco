@@ -1,11 +1,48 @@
 steps:
-  # Build Docker image
+  # Step 1: Build Docker image
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'us-central1-docker.pkg.dev/civic-nation-450611-j2/my-app/my-react-app', '.'] 
+    args: 
+      - 'build'
+      - '-t'
+      - 'us-central1-docker.pkg.dev/civic-nation-450611-j2/my-app/my-react-app'
+      - '.'
 
-  # Push Docker image to Google Artifact Registry
+  # Step 2: Push Docker image to Google Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'us-central1-docker.pkg.dev/civic-nation-450611-j2/my-app/my-react-app'] 
+    args: 
+      - 'push'
+      - 'us-central1-docker.pkg.dev/civic-nation-450611-j2/my-app/my-react-app'
+
+  # Step 3: Authenticate with GKE
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args:
+      - 'container'
+      - 'clusters'
+      - 'get-credentials'
+      - 'my-cluster'  # Replace with your actual GKE cluster name
+      - '--region'
+      - 'us-central1'
+
+  # Step 4: Apply Kubernetes Deployment
+  - name: 'gcr.io/cloud-builders/kubectl'
+    args:
+      - 'apply'
+      - '-f'
+      - 'deployment.yaml'  # Your Kubernetes deployment file
+    env:
+      - 'CLOUDSDK_COMPUTE_REGION=us-central1'
+      - 'CLOUDSDK_CONTAINER_CLUSTER=my-cluster'
+
+  # Step 5: Update deployment with new image
+  - name: 'gcr.io/cloud-builders/kubectl'
+    args:
+      - 'set'
+      - 'image'
+      - 'deployment/my-react-app-deployment'
+      - 'my-react-app=us-central1-docker.pkg.dev/civic-nation-450611-j2/my-app/my-react-app'
+    env:
+      - 'CLOUDSDK_COMPUTE_REGION=us-central1'
+      - 'CLOUDSDK_CONTAINER_CLUSTER=my-cluster'
 
 images:
   - 'us-central1-docker.pkg.dev/civic-nation-450611-j2/my-app/my-react-app'
