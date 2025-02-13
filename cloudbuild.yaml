@@ -1,0 +1,11 @@
+steps:
+  # Build Docker image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'us-central1-docker.pkg.dev/civic-nation-450611-j2/my-app/my-react-app', '.'] 
+
+  # Push Docker image to Google Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'us-central1-docker.pkg.dev/civic-nation-450611-j2/my-app/my-react-app'] 
+
+images:
+  - 'us-central1-docker.pkg.dev/civic-nation-450611-j2/my-app/my-react-app'
