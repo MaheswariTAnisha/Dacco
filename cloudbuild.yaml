@@ -38,7 +38,7 @@ steps:
     args:
       - 'set'
       - 'image'
-      - 'deployment/my-react-app-deployment'
+      - 'deployment/my-react-app'
       - 'my-react-app=us-central1-docker.pkg.dev/civic-nation-450611-j2/my-app/my-react-app'
     env:
       - 'CLOUDSDK_COMPUTE_REGION=us-central1'
