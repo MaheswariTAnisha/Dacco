@@ -9,3 +9,6 @@ steps:
 
 images:
   - 'us-central1-docker.pkg.dev/civic-nation-450611-j2/my-app/my-react-app'
+
+options:
+  logging: CLOUD_LOGGING_ONLY
