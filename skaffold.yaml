@@ -1,0 +1,12 @@
+apiVersion: skaffold/v2beta26
+kind: Config
+metadata:
+  name: my-cloud-run-app
+build:
+  artifacts:
+    - image: us-central1-docker.pkg.dev/civic-nation-450611-j2/my-repo/my-cloud-run-app
+deploy:
+  cloudrun:
+    projectId: civic-nation-450611-j2
+    region: us-central1
+    serviceName: my-cloud-run-service

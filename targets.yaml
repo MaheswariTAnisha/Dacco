@@ -1,0 +1,17 @@
+apiVersion: deploy.cloud.google.com/v1
+kind: Target
+metadata:
+  name: dev
+description: Development environment
+run:
+  location: us-central1
+  service: my-cloud-run-service-dev
+---
+apiVersion: deploy.cloud.google.com/v1
+kind: Target
+metadata:
+  name: prod
+description: Production environment
+run:
+  location: us-central1
+  service: my-cloud-run-service-prod

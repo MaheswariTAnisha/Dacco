@@ -1,0 +1,11 @@
+apiVersion: deploy.cloud.google.com/v1
+kind: DeliveryPipeline
+metadata:
+  name: my-cloud-run-pipeline
+description: Pipeline for deploying to Cloud Run
+serialPipeline:
+  stages:
+    - name: dev
+      targetId: dev
+    - name: prod
+      targetId: prod
