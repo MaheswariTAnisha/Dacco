@@ -1,0 +1,38 @@
+steps:
+  # Step 1: Build Docker image with a unique tag
+  - name: 'gcr.io/cloud-builders/docker'
+    args: 
+      - 'build'
+      - '-t'
+      - 'us-central1-docker.pkg.dev/civic-nation-450611-j2/my-app/my-react-app:$BUILD_ID'
+      - '-t'
+      - 'us-central1-docker.pkg.dev/civic-nation-450611-j2/my-app/my-react-app:latest'
+      - '.'
+
+  # Step 2: Push Docker image to Google Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: 
+      - 'push'
+      - 'us-central1-docker.pkg.dev/civic-nation-450611-j2/my-app/my-react-app:$BUILD_ID'
+
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'push'
+      - 'us-central1-docker.pkg.dev/civic-nation-450611-j2/my-app/my-react-app:latest'
+
+  # Step 3: Deploy to Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    args:
+      - 'run'
+      - 'deploy'
+      - 'my-react-app'  # Name of your Cloud Run service
+      - '--image'
+      - 'us-central1-docker.pkg.dev/civic-nation-450611-j2/my-app/my-react-app:$BUILD_ID'
+      - '--region'
+      - 'us-central1'  # Your preferred region
+      - '--platform'
+      - 'managed'
+      - '--allow-unauthenticated'  # Optional: allows unauthenticated access
+
+options:
+  logging: CLOUD_LOGGING_ONLY
